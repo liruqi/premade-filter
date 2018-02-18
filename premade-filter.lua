@@ -163,9 +163,11 @@ local PremadeFilter_ActivityInfo = {
 	
 	["3-131-479"]	= { tier = 7, instance = 5, raid = true, difficulty = 14 }, -- ToS Normal
 	["3-131-478"]	= { tier = 7, instance = 5, raid = true, difficulty = 15 }, -- ToS Heroic
+	["3-131-492"]	= { tier = 7, instance = 5, raid = true, difficulty = 16 }, -- ToS Mythic
 	
 	["3-132-482"]	= { tier = 7, instance = 6, raid = true, difficulty = 14 }, -- AtBT Normal
 	["3-132-483"]	= { tier = 7, instance = 6, raid = true, difficulty = 15 }, -- AtBT Heroic
+	["3-132-493"]	= { tier = 7, instance = 6, raid = true, difficulty = 16 }, -- AtBT Mythic
 }
 
 local PremadeFilter_RealmChapters = {
@@ -1801,11 +1803,14 @@ function PremadeFilter_GetAvailableBosses()
 	if type(activity) == "table" then		
 		EncounterJournal_TierDropDown_Select(nil, activity.tier);
 		
-		local instanceID = EJ_GetInstanceByIndex(activity.instance, activity.raid);		
-		if activity.tier == 7 and activity.instance == 6 and instanceID == 959 then
-			instanceID = 946
+		local instanceID = EJ_GetInstanceByIndex(activity.instance, activity.raid);
+		
+		if GetLocale() == "zhCN" then --Fix zhCN UI API bug (https://twitter.com/liruqi/status/946870306873909248)
+			if activity.tier == 7 and activity.instance == 6 and instanceID == 959 then
+				instanceID = 946
+			end
 		end
-
+		
 		EncounterJournal_DisplayInstance(instanceID);
 		
 		if activity.difficulty then
